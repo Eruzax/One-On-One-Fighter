@@ -9,16 +9,28 @@
     <script src="script.js"></script>
 </head>
 <body onload="initialize();">
-    <div class="playerStats">
-        Player Health: <span id="playerhealth"></span>
+    <div class="player">
+        <div class="stats">
+            <h2>Player</h2>
+            Strength: <span id="playerstrength"></span>
+            Cunning: <span id="playercunning"></span>
+            Speed: <span id="playerspeed"></span>
+            Fatigue: <span id="playerfatigue"></span>
+        </div>
+        <div class="moves">
+            <button id="attack">Attack</button>
+            <button id="defend">Defend</button>
+            <button id="finishingmove">Finishing Move</button>
+        </div>
+
     </div>
-    <div class="enemyStats">
-        Enemy Health: <span id="enemyhealth"></span>
-    </div>
-    <div class="moves">
-        <button id="attack">Attack</button>
-        <button id="defend">Defend</button>
-        <button id="finishingmove">Finishing Move</button>
+
+    <div class="enemy">
+        <h2>Enemy</h2>
+        Strength: <span id="enemystrength"></span>
+        Cunning: <span id="enemycunning"></span>
+        Speed: <span id="enemyspeed"></span>
+        Fatigue: <span id="enemyfatigue"></span>
     </div>
 </body>
 </html>

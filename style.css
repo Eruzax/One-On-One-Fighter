@@ -2,4 +2,37 @@ body
 {
     font-family: Verdana;
     color:black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: gray;
+}
+
+.player
+{
+   display: flex;
+   flex-direction: column; 
+}
+
+.stats
+{
+    color: white;
+}
+
+button
+{
+    border: none;
+    font-family: sans-serif;
+    font-weight: bold;
+    margin: 10px;
+    padding: 10px;
+    color: white;
+    background-color: black;
+}
+
+button:hover
+{
+    cursor: pointer;
+    transition: 0.5s;
+    box-shadow: 10px 5px 5px red, -1em 0 .4em black;
 }
