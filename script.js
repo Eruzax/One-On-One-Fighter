@@ -10,10 +10,25 @@ function initialize()
     enemySpeed = document.getElementById("enemyspeed");
     enemyFatigue = document.getElementById("enemyfatigue");
 
-    player = {strength: 6, cunning: 6, speed: 6, fatigue: 30}
-    enemy = {strength: 6, cunning: 6, speed: 6, fatigue: 30}
+    player = {strength: 6, cunning: 6, speed: 6, fatigue: 30};
+    enemy = {strength: 6, cunning: 6, speed: 6, fatigue: 30};
+
+    playerLog = document.getElementById("playerlog");
+    enemyLog = document.getElementById("enemylog");
+    pLog = "";
+    eLog = "";
+
+    play();
     display();
 }
+
+// function player(strength, cunning, speed, fatigue)
+// {
+//     this.strength = 6;
+//     this.cunning = 6;
+//     this.speed = 6;
+//     this.fatigue = 30;
+// }
 
 function play()
 {
@@ -22,34 +37,34 @@ function play()
     for (i = 0; i < 2; i++)
     {
         index = Math.floor(Math.random() * (playerStats.length))
-        if (playerStats[index] === player.fatigue)
+        if (playerStats[index] == player.fatigue)
         {
-            modifier(player.fatigue, Math.floor(Math.random() * 7))
+            modifier(player.fatigue, Math.floor(Math.random() * 7));
             playerStats.splice(index, 1);
         }
         else
         {
-            modifier(playerStats[index], Math.floor(Math.random() * 2))
+            modifier(playerStats[index], Math.floor(Math.random() * 2));
             playerStats.splice(index, 1);
         }
     }
 
     if (playerStats[0] === player.fatigue)
     {
-        modifier(player.fatigue, Math.floor(Math.random() * 7) * -1)
+        modifier(player.fatigue, Math.floor(Math.random() * 7) * -1);
     }
     else
     {
-        modifier(playerStats[0], Math.floor(Math.random() * 2) * -1)
+        modifier(playerStats[0], Math.floor(Math.random() * 2) * -1);
     }
 
-    if (playerStats[1] === player.fatigue)
+    if (playerStats[1] == player.fatigue)
     {
-        modifier(player.fatigue, Math.floor(Math.random() * 7) * -1)
+        modifier(player.fatigue, Math.floor(Math.random() * 7) * -1);
     }
     else
     {
-        modifier(playerStats[1], Math.floor(Math.random() * 2) * -1)
+        modifier(playerStats[1], Math.floor(Math.random() * 2) * -1);
     }
 
     //modify enemy stats
@@ -57,40 +72,44 @@ function play()
     for (i = 0; i < 2; i++)
     {
         index = Math.floor(Math.random() * (enemyStats.length))
-        if (enemyStats[index] === enemy.fatigue)
+        console.log(index);
+        console.log(enemyStats[index]);
+        if (enemyStats[index] == enemy.fatigue)
         {
-            modifier(enemy.fatigue, Math.floor(Math.random() * 7))
+            modifier(enemy.fatigue, Math.floor(Math.random() * 7));
             enemyStats.splice(index, 1);
         }
         else
         {
-            modifier(enemyStats[index], Math.floor(Math.random() * 2))
+            modifier(enemyStats[index], Math.floor(Math.random() * 2));
             enemyStats.splice(index, 1);
         }
     }
 
-    if (enemyStats[0] === enemy.fatigue)
+    if (enemyStats[0] == enemy.fatigue)
     {
-        modifier(enemy.fatigue, Math.floor(Math.random() * 7) * -1)
+        modifier(enemy.fatigue, Math.floor(Math.random() * 7) * -1);
     }
     else
     {
-        modifier(enemyStats[0], Math.floor(Math.random() * 2) * -1)
+        modifier(enemyStats[0], Math.floor(Math.random() * 2) * -1);
     }
 
-    if (enemyStats[1] === enemy.fatigue)
+    if (enemyStats[1] == enemy.fatigue)
     {
-        modifier(enemy.fatigue, Math.floor(Math.random() * 7) * -1)
+        modifier(enemy.fatigue, Math.floor(Math.random() * 7) * -1);
     }
     else
     {
-        modifier(enemyStats[1], Math.floor(Math.random() * 2) * -1)
+        modifier(enemyStats[1], Math.floor(Math.random() * 2) * -1);
     }
+
+    display();
 }
 
 function attack(p, e)
 {
-
+    atk = (p.strength);
 }
 
 function defend(p)
@@ -103,9 +122,9 @@ function finishingMove()
 
 }
 
-function modfier(stat, mod)
+function modifier(s, mod)
 {
-    stat += mod;
+    s += mod;
 }
 
 function display()
@@ -119,4 +138,7 @@ function display()
     enemyCunning.innerHTML = enemy.cunning;
     enemySpeed.innerHTML = enemy.speed;
     enemyFatigue.innerHTML = enemy.fatigue;
+
+    playerLog.innerHTML = pLog;
+    enemyLog.innerHTML = eLog;
 }
