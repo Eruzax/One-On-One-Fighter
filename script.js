@@ -244,19 +244,19 @@ function turn(p, e)
    display();
 }
 
-function attack(p)
+function attack()
 {
-    p.isAttack = true;
+    player.isAttack = true;
 }
 
-function defend(p)
+function defend()
 {
-    p.isDefending = true;
+    player.isDefending = true;
 }
 
-function finishingMove(p)
+function finishingMove()
 {
-    p.finishingMove = true;
+    player.finishingMove = true;
 }
 
 function display()
@@ -273,4 +273,13 @@ function display()
 
     playerLog.innerHTML = pLog;
     enemyLog.innerHTML = eLog;
+
+    if (player.fatigue >= (enemy.fatigue * 2) || enemy.fatigue < 0)
+    {
+        document.getElementById("finishingMove").style.visibility = "visable";
+    }
+    else
+    {
+        document.getElementById("finishingMove").style.visibility = "hidden";
+    }
 }
