@@ -10,19 +10,17 @@ function initialize()
     enemySpeed = document.getElementById("enemyspeed");
     enemyFatigue = document.getElementById("enemyfatigue");
 
-    player = {strength: 6, cunning: 6, speed: 6, fatigue: 30, maxFatigue: 30, isAttack: false, isDefending: false, isFinishingMove: false};
-    enemy = {strength: 6, cunning: 6, speed: 6, fatigue: 30, maxFatigue: 30, isAttack: false, isDefending: false, isFinishingMove: false};
+    player = {strength: 6, cunning: 6, speed: 6, fatigue: 30, maxFatigue: 30, attack: 0, defense: 0, isAttack: false, isDefending: false, isFinishingMove: false, dead: false, log: ""};
+    enemy = {strength: 6, cunning: 6, speed: 6, fatigue: 30, maxFatigue: 30, attack: 0, defense: 0, isAttack: false, isDefending: false, isFinishingMove: false, dead: false, log: ""};
 
     playerLog = document.getElementById("playerlog");
     enemyLog = document.getElementById("enemylog");
-    pLog = "";
-    eLog = "";
 
-    play();
+    makeStats();
     display();
 }
 
-function play()
+function makeStats()
 {
     //player stat increase
     playerStats = [1, 2, 3, 4]
@@ -178,22 +176,39 @@ function play()
     display();
 }
 
+//Moves
 function turn(p, e)
 {
-    //Attack
-    if (p.isAttack == true)
+    //check dead
+    if (player.dead == true)
     {
-        atk = (p.strength + p.speed + p.cunning / ((Math.floor(Math.random() * 3)) + 1 ));
-        if (e.isDefending == true)
-        {
-         def = e.speed + e.cunning;
-        }
-        else
-        {
-         def = e.speed + ((Math.floor(Math.random() * 6)) + 1 )
-        }
-     
-        if (atk > def)
+        player.log += "You Lose!";
+    }
+    else
+    {
+        player.log += "You Win!";
+    }
+
+    //computer decides move and calculates
+    enemyChoice = (Math.floor(Math.random() * 2)) + 1;
+    if (enemy.fatigue >= (player.fatigue * 2) || player.fatigue < 0)
+    {
+        finishingMove(enemy);
+    }
+    else if (enemyChoice == 1)
+    {
+        attack(enemy);
+    }
+    else
+    {
+        defend(enemy);
+    }
+
+    //checks what the player picked
+    if (player.isAttack == true)
+    {
+        attack(player);
+        if (p.attack > e.defense)
         {
          e.fatigue -= (atk - def)
         }
@@ -213,12 +228,21 @@ function turn(p, e)
             }
         }
     }
-
-    //Defending
-    if (p.isDefending == true && e.isDefending == true)
+    else if (player.isDefending == true)
     {
-        pRestore = (Math.floor(Math.random() * 6)) + 1;
-        if ((p.fatigue + pRestore) > p.maxFatigue)
+        defend(player)
+        if (p.isDefending == true && e.isDefending == true)
+        {
+            restore(p);
+            restore(e);
+        }
+        else if (e.attack > p.defense)
+        {
+            p.fatigue -= (atk - def);
+        }
+        else
+        {
+        if ((p.fatigue + restore) > p.maxFatigue)
         {
             p.fatigue = p.maxFatigue;
         }
@@ -226,37 +250,97 @@ function turn(p, e)
         {
             p.fatigue += restore;
         }
+       }
 
-        eRestore = (Math.floor(Math.random() * 6)) + 1;
-        if ((e.fatigue + eRestore) > e.maxFatigue)
+    }
+    else if (player.finishingMove == true) 
+    {
+        finishingMove(player);
+    }
+
+
+    //reset state
+    player.isAttack = false;
+    player.isDefending = false;
+    player.isFinishingMove = false;
+    player.attack = 0;
+        
+    enemy.isAttack = false;
+    enemy.isDefending = false;
+    enemy.isFinishingMove = false;
+    enemy.attack = 0;
+
+    display();
+}
+
+function attack(p)
+{
+    // Player Attack
+    p.isAttack = true;
+    p.attack = (p.strength + p.speed + p.cunning) / ((Math.floor(Math.random() * 3)) + 1 );
+    p.defense = e.speed + ((Math.floor(Math.random() * 6)) + 1 );
+    p.Log += "Attack, ";
+}
+
+function defend(p)
+{
+    p.isDefending = true;
+    p.defense = p.speed + p.cunning;
+    p.Log += "Defend, ";
+}
+
+function finishingMove(p, e)
+{
+    p.finishingMove = true;
+    p.attack = (p.strength + p.speed) / ((Math.floor(Math.random() * 3)) + 1 );
+    p.defense = e.speed + ((Math.floor(Math.random() * 6)) + 1 );
+    if (p.finishingMove == true)
+    {
+    
+        if (e.isDefending == true)
         {
-            e.fatigue = e.maxFatigue;
+            def = e.speed + e.cunning;
+            e.log += "Defend, ";
+        }
+        else 
+        {
+            def = e.speed + ((Math.floor(Math.random() * 6)) + 1 )
+        }
+ 
+        if ((atk - def) > 1)
+        {
+            e.dead = true;
         }
         else
         {
-            e.fatigue += eRestore;
+            if (e.fatigue < e.maxFatigue)
+            {
+                restore = (Math.floor(Math.random() * 6)) + 1;
+                if ((e.fatigue + restore) > e.maxFatigue)
+                {
+                    e.fatigue = e.maxFatigue;
+                }
+                else
+                {
+                    e.fatigue += restore;
+                }
+            }
         }
-   }
-
-   //Finishing Move
-
-
-   display();
+        p.Log += "FinishingMove, ";
+    }
 }
 
-function attack()
+function restore(p)
 {
-    player.isAttack = true;
-}
-
-function defend()
-{
-    player.isDefending = true;
-}
-
-function finishingMove()
-{
-    player.finishingMove = true;
+    restore = (Math.floor(Math.random() * 6)) + 1;
+    if ((p.fatigue + restore) > p.maxFatigue)
+    {
+        p.fatigue = p.maxFatigue;
+    }
+    else
+    {
+        p.fatigue += restore;
+    }
 }
 
 function display()
@@ -271,8 +355,8 @@ function display()
     enemySpeed.innerHTML = enemy.speed;
     enemyFatigue.innerHTML = enemy.fatigue;
 
-    playerLog.innerHTML = pLog;
-    enemyLog.innerHTML = eLog;
+    playerLog.innerHTML = player.log;
+    enemyLog.innerHTML = enemy.log;
 
     if (player.fatigue >= (enemy.fatigue * 2) || enemy.fatigue < 0)
     {
