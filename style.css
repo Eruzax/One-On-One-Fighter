@@ -36,3 +36,8 @@ button:hover
     transition: 0.5s;
     box-shadow: 10px 5px 5px red, -1em 0 .4em black;
 }
+
+#finishingMove
+{
+    display: none;
+}
