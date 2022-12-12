@@ -10,8 +10,8 @@ function initialize()
     enemySpeed = document.getElementById("enemyspeed");
     enemyFatigue = document.getElementById("enemyfatigue");
 
-    player = {strength: 6, cunning: 6, speed: 6, fatigue: 30, maxFatigue: 30, attack: 0, defense: 0, state: "", dead: "n", log: ""};
-    enemy = {strength: 6, cunning: 6, speed: 6, fatigue: 30, maxFatigue: 30, attack: 0, defense: 0, state: "", dead: "n", log: ""};
+    player = {strength: 6, cunning: 6, speed: 6, fatigue: 30, maxFatigue: 30, prevFatigue: 30, attack: 0, defense: 0, state: "", dead: "n", log: ""};
+    enemy = {strength: 6, cunning: 6, speed: 6, fatigue: 30, maxFatigue: 30, prevFatigue: 30, attack: 0, defense: 0, state: "", dead: "n", log: ""};
 
     playerLog = document.getElementById("playerlog");
     enemyLog = document.getElementById("enemylog");
@@ -121,7 +121,7 @@ function makeStats()
         else if (enemyStats[index] === 4)
         {
             enemy.fatigue += Math.floor(Math.random() * 7);
-            console.log("enemenemy fatigue inc: "+ enemy.fatigue)
+            console.log("enemy fatigue inc: "+ enemy.fatigue)
             enemyStats.splice(index, 1);
         }
     }
@@ -170,7 +170,10 @@ function makeStats()
     }
 
     player.maxFatigue = player.fatigue;
+    player.prevFatigue = player.fatigue;
+
     enemy.maxFatigue = enemy.fatigue;
+    enemy.prevFatigue = enemy.fatigue;
 
     display();
 }
@@ -216,7 +219,6 @@ function turn(p, e)
                 if ((e.attack - p.defense) > 1)
                 {
                     p.dead = "y";
-                    p.log += "You Lose";
                 }
                 else if (p.state == "defending")
                 {
@@ -246,7 +248,6 @@ function turn(p, e)
                 if ((e.attack - p.defense) > 1)
                 {
                     p.dead = "y";
-                    p.log += "You Lose";
                 }
                 else if (p.state == "defending")
                 {
@@ -260,13 +261,58 @@ function turn(p, e)
             if ((p.attack - e.defense) > 1)
             {
                 e.dead = "y";
-                p.log += "You Win!"
             }
             else if (e.state == "defending")
             {
                 restore(e);
             }
         }
+
+        if ((player.prevFatigue - player.fatigue) / 5 != 0)
+        {
+            if (Math.floor((player.prevFatigue - player.fatigue) / 5) < 0)
+            {
+                player.strength -= Math.floor((player.prevFatigue - player.fatigue) / 5) + 1;
+                player.cunning -= Math.floor((player.prevFatigue - player.fatigue) / 5) + 1;
+                player.speed -= Math.floor((player.prevFatigue - player.fatigue) / 5) + 1;
+                player.prevFatigue = player.fatigue;
+            }
+            else
+            {
+                player.strength -= Math.floor((player.prevFatigue - player.fatigue) / 5);
+                player.cunning -= Math.floor((player.prevFatigue - player.fatigue) / 5);
+                player.speed -= Math.floor((player.prevFatigue - player.fatigue) / 5);
+                player.prevFatigue = player.fatigue;
+            }
+        }
+        if ((enemy.prevFatigue - enemy.fatigue) / 5 != 0)
+        {
+            if (Math.floor((enemy.prevFatigue - enemy.fatigue) / 5) < 0)
+            {
+                enemy.strength -= Math.floor((enemy.prevFatigue - enemy.fatigue) / 5) + 1;
+                enemy.cunning -= Math.floor((enemy.prevFatigue - enemy.fatigue) / 5) + 1;
+                enemy.speed -= Math.floor((enemy.prevFatigue - enemy.fatigue) / 5) + 1;
+                enemy.prevFatigue = enemy.fatigue;
+            }
+            else
+            {
+                enemy.strength -= Math.floor((enemy.prevFatigue - enemy.fatigue) / 5);
+                enemy.cunning -= Math.floor((enemy.prevFatigue - enemy.fatigue) / 5);
+                enemy.speed -= Math.floor((enemy.prevFatigue - enemy.fatigue) / 5);
+                enemy.prevFatigue = enemy.fatigue;
+            }
+        }
+
+    }
+    if (player.dead == "n" && enemy.dead == "y")
+    {
+        p.log += "You Win!"
+        display();
+    }
+    else if (player.dead == "y" && enemy.dead == "n")
+    {
+        p.log += "You Lose";
+        display();
     }
     //reset state
     player.state = "";
