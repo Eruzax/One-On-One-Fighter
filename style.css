@@ -1,11 +1,15 @@
 body
 {
+    background-image: url("https://media.tenor.com/fZhEeuUufz0AAAAC/landscape-city.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
     font-family: Verdana;
     color:black;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background: gray;
+    background-color: black;
+    font-weight: bold;
 }
 
 .player
@@ -17,6 +21,7 @@ body
 .stats
 {
     color: white;
+    font-size: 20px;
 }
 
 button
@@ -35,6 +40,12 @@ button:hover
     cursor: pointer;
     transition: 0.5s;
     box-shadow: 10px 5px 5px red, -1em 0 .4em black;
+}
+
+.log
+{
+    color:white;
+    font-size: 18px;
 }
 
 #finishingMove
